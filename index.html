@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Demo: TODO</title>
+        <title></title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,28 +19,24 @@
     <body>
 
     <main role="main" class="container extra-bottom">
-      <h1 class="mt-5">Illini Invest</h1>
-      <!-- <p><mark>Do it now.</mark></p> -->
+      <h1 class="mt-5">Tokyo Olympics</h1>
     </main>
 
-    <!-- search bar:  -->
     <div>
-      <input type="text" name="JohnJohnson" placeholder="(Field):(Value)" class = "searchbar">
-      <button onclick="commandServerToRender()"> Filter! </button>
+      <input type="text" placeholder="(Field):(Value)" id="searchbar">
+      <button onclick="commandServerToRender1()"> Search! </button>
       <script>
-          function commandServerToRender() {
-              console.log("HEY HEY HEY");
-              search_text = document.getElementsByClassName("searchbar").innerHTML;
+          function commandServerToRender1() {
+              search_text = document.getElementById("searchbar").value;
 
               var xhr = new XMLHttpRequest();
-              var url = "/search";
+              var url = "/athlete/search";
 
               xhr.open("POST", url, true);
               xhr.setRequestHeader("Content-Type", "application/json");
 
               xhr.onreadystatechange = function () {
                   if (xhr.readyState === 4 && xhr.status === 200) {
-                      // if print 0 meaning that it was successfull
                       if (xhr.responseText == '0') {
                         console.log(search_text);
 
@@ -58,12 +54,110 @@
           }
       </script>
     </div>
-    <div class="yeahhh">
-        <form action="/trigger" method="POST">
-            <input type="text" name="TriggerInput" placeholder="(Ticker):(New Price)">
-            <input type="submit" value="Update!">
-        </form>
+
+    <div>
+      <input type="text" placeholder="(Field):(Value)" id="insertbar">
+      <button onclick="commandServerToRender2()"> Insert! </button>
+      <script>
+          function commandServerToRender2() {
+              insert_text = document.getElementById("insertbar").value;
+
+              var xhr = new XMLHttpRequest();
+              var url = "/athlete/insert";
+
+              xhr.open("POST", url, true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                      if (xhr.responseText == '0') {
+                        console.log(insert_text);
+
+                      } else {
+                        console.log("fai");
+                        console.log(insert_text);
+
+                      }
+                  }
+              };
+
+              var data = JSON.stringify({"htmlstr": insert_text});
+              xhr.send(data);
+              console.log("yer");
+          }
+      </script>
     </div>
+
+    <div>
+      <input type="text" placeholder="(Field):(Value)" id="deletebar">
+      <button onclick="commandServerToRender3()"> Delete! </button>
+      <script>
+          function commandServerToRender3() {
+              delete_text = document.getElementById("deletebar").value;
+
+              var xhr = new XMLHttpRequest();
+              var url = "/athlete/delete";
+
+              xhr.open("POST", url, true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                      if (xhr.responseText == '0') {
+                        console.log(delete_text);
+
+                      } else {
+                        console.log("fai");
+                        console.log(delete_text);
+
+                      }
+                  }
+              };
+
+              var data = JSON.stringify({"htmlstr": delete_text});
+              xhr.send(data);
+              console.log("yer");
+          }
+      </script>
+    </div>
+
+    <div>
+      <input type="text" name="JohnJohnson" placeholder="(Field):(Value)" id="updatesetbar">
+      <input type="text" name="JoeJohnson" placeholder="(Field):(Value)" id="updatewherebar">
+      <button onclick="commandServerToRender4()"> Update! </button>
+      <script>
+          function commandServerToRender4() {
+              updateset_text = document.getElementById("updatesetbar").value;
+              updatewhere_text = document.getElementById("updatewherebar").value;
+
+              var xhr = new XMLHttpRequest();
+              var url = "/athlete/update";
+
+              xhr.open("POST", url, true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                      if (xhr.responseText == '0') {
+                        console.log(updateset_text);
+                        console.log(updatewhere_text);
+
+                      } else {
+                        console.log("fai");
+                        console.log(updateset_text);
+                        console.log(updatewhere_text);
+
+                      }
+                  }
+              };
+
+              var data = JSON.stringify({"htmlstr1": updateset_text, "htmlstr2": updatewhere_text});
+              xhr.send(data);
+              console.log("yer");
+          }
+      </script>
+    </div>
+
     <button onclick="location.href = '/query1';" id="myButton" class="float-left submit-button" >Adv Query 1</button>
     <button onclick="location.href = '/query2';" id="myButton" class="float-left submit-button" >Adv Query 2</button>
     <br><br>
@@ -71,94 +165,26 @@
     <button onclick="location.href = '/coach';" id="myButton" class="float-left submit-button" >Coaches</button>
     <button onclick="location.href = '/country';" id="myButton" class="float-left submit-button" >Country</button>
     <br><br>
-    <button onclick="location.href = '/storedtrue';" id="myButton" class="float-right submit-button" >Stored Procedure: Top Stock</button>
-    <button onclick="location.href = '/storedfalse';" id="myButton" class="float-right submit-button" >Stored Procedure: No Top Stock</button>
-    <!-- trigger button -->
     
-    <div class="container" method="POST">    
-        <!-- ADD portfolio, change to add portfolio -->
-        <!-- Button trigger modal -->
-        <div style="text-align: right;">
-        <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#portfolio-modal" data-source="New Investment">Add Investment</button>
-        </div>
-
-        
-        <div class="modal fade" id="portfolio-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="Label">Add a portfolio</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <body>
-                    <p>Enert Investment Attributes as CSV WITHOUT SPACES</p>
-                    <p>PName,Type,Tick,Name,Quant,Price,Date,NetGain,ExpRat</p>
-                </body>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="portfolio-form-display"></span>
-                    <input type="text" class="form-control" placeholder="PortfolioName,InvestmentType,InvestmentTicker,InvestmentName,InvestmentQuant,PurchasePrice,PurchaseDate,NetGain,ExpenseRatio" aria-label="portfolio-name" aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="submit-portfolio" type="button" class="btn btn-primary">Save changes</button>
-            </div>
-            </div>
-        </div>
-        </div>
-
-    </div>
-
-    <!--Todo Table-->
+    
     <div class="container table-responsive">          
     <table class="table">
         <thead>
         <tr>
-            <th class="portfolio-id">#</th>
-            <th class="portfolio">portfolio Name</th>
-            <th class="invest-type">Investment Type</th>
-            <th class="invest-ticker">Investment Ticker</th>
-            <th class="invest-name">Investment Name</th>
-            <th class="invest-quantity">Investment Quantity</th>
-            <th class="invest-purchase-price"> Purchase Price</th>
-            <th class="invest-purchase-date">Purchase Date</th>
-            <th class="invest-net-gain">Net Gain</th>
-            <th class="invest-expense-ratio">Expense Ratio</th>
-            <!-- <th class="status">Status</th> -->
-            <th class="update">Edit</th>
-            <th class="update">Remove</th>
+    
+            <th class="athlete-name">Athlete Name</th>
+            <th class="country-cca3">Country CCA3</th>
+            <th class="disciple-name">Discipline Name</th>
+           
         </tr>
         </thead>
 
         <tbody>
         {% for item in items %}
             <tr>
-                <td>{{item.id}}</td>
-                <td>{{item.PortfolioName}}</td>
-                <td>{{item.Type}}</td>
-                <td>{{item.Ticker}}</td>
-                <td>{{item.Name}}</td>
-                <td>{{item.Quantity}}</td>
-                <td>{{item.PurchasePrice}}</td>
-                <td>{{item.PurchaseDate}}</td>
-                <td>{{item.NetGain}}</td>
-                <td>{{item.ExpenseRatio}}</td>
-
-                <!-- {% if item.status == "In Progress" %}
-                    <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Todo" %}
-                    <td><button type="button" class="btn btn-outline-secondary btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Complete" %}
-                    <td><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%} -->
-                
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#portfolio-modal" data-source="{{item.id}}" data-content="{{item.PortfolioName}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
+                <td>{{item.name}}</td>
+                <td>{{item.CCA3}}</td>
+                <td>{{item.discipline_name}}</td>
             </tr>
         {% endfor %}
         
@@ -166,18 +192,10 @@
     </table>
     </div>
 
-
-
-    <!-- <footer class="footer">
-      <div class="container">
-            <p class="text-muted"><small>App developed for CS411 UIUC by @tcheng10</small></p>
-      </div>
-    </footer> -->
   </body>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='script/modal.js') }}"></script>
 
 </html>
