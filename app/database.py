@@ -171,7 +171,7 @@ def insert_db(table, value_string):
     
 def transaction_db() -> dict:
     conn = db.connect()
-    conn.row_factory = db.Row
+    #conn.row_factory = db.Row
 
     try:
         # Disable auto-commit
@@ -209,8 +209,8 @@ def transaction_db() -> dict:
             new_discipline_id = len(query_results2) + 1
 
             insert_query = f"""
-                            INSERT INTO Discipline (id, name)
-                            VALUES ({new_discipline_id}, '{new_discipline_name}');
+                            INSERT IGNORE INTO Discipline (name)
+                            VALUES ('{new_discipline_name}');
                             """
             conn.execute(insert_query)
 
