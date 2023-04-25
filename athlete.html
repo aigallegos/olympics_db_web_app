@@ -27,28 +27,25 @@
       <button onclick="commandServerToRender1()"> Search! </button>
       <script>
           function updateDOMTable(updatedTablePartial) {
-            var tableContainer = document.getElementById("tableContainer");
-            tableContainer.innerHTML = updatedTablePartial;
+            console.log(updatedTablePartial);
+            var currentTable = document.getElementById("table1"); // Replace 'yourTableId' with the actual ID of your table in the HTML
+            currentTable.innerHTML = updatedTablePartial;
           }
+
           function commandServerToRender1() {
               search_text = document.getElementById("searchbar").value;
 
               var xhr = new XMLHttpRequest();
-              var url = "/athlete/update?search_text=" + encodeURIComponent(search_text)
+              var url = "/athlete/update_table_partial?search_text=" + encodeURIComponent(search_text)
 
-              xhr.setRequestHeader("Content-Type", "application/json");
+              // xhr.setRequestHeader("Content-Type", "application/json");
 
               xhr.open("GET", url, true);
 
               xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                  var jsonResponse = JSON.parse(xhr.responseText);
-                  if (jsonResponse.result === 'success') {
-                    console.log("Success! Updated items:", jsonResponse.items);
-                    updateDOMTable(jsonResponse.items);
-                  } else {
-                    console.log("Failed to update the table."); 
-                  }
+                  var updatedTablePartial = xhr.responseText;
+                  updateDOMTable(updatedTablePartial);
                 }
               };
 
@@ -164,8 +161,6 @@
     <button onclick="location.href = '/query1';" id="myButton" class="float-left submit-button" >Adv Query 1</button>
     <button onclick="location.href = '/query2';" id="myButton" class="float-left submit-button" >Adv Query 2</button>
     <button onclick="location.href = '/transaction';" id="myButton" class="float-left submit-button" >Transaction</button>
-
-        
     <br><br>
     <button onclick="location.href = '/athlete';" id="myButton" class="float-left submit-button" >Athletes</button>
     <button onclick="location.href = '/coach';" id="myButton" class="float-left submit-button" >Coaches</button>
@@ -174,7 +169,7 @@
     
     
     <div class="container table-responsive" id="tableContainer">          
-    <table class="table">
+    <table class="table" id="table1">
         <thead>
         <tr>
     

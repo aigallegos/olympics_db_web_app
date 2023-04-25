@@ -26,31 +26,30 @@
       <input type="text" placeholder="(Field):(Value)" id="searchbar">
       <button onclick="commandServerToRender1()"> Search! </button>
       <script>
+          function updateDOMTable(updatedTablePartial) {
+            console.log(updatedTablePartial);
+            var currentTable = document.getElementById("table1"); // Replace 'yourTableId' with the actual ID of your table in the HTML
+            currentTable.innerHTML = updatedTablePartial;
+          }
+
           function commandServerToRender1() {
               search_text = document.getElementById("searchbar").value;
 
               var xhr = new XMLHttpRequest();
-              var url = "/athlete/search";
+              var url = "/athlete/update_table_partial?search_text=" + encodeURIComponent(search_text)
 
-              xhr.open("POST", url, true);
-              xhr.setRequestHeader("Content-Type", "application/json");
+              // xhr.setRequestHeader("Content-Type", "application/json");
+
+              xhr.open("GET", url, true);
 
               xhr.onreadystatechange = function () {
-                  if (xhr.readyState === 4 && xhr.status === 200) {
-                      if (xhr.responseText == '0') {
-                        console.log(search_text);
-
-                      } else {
-                        console.log("fai");
-                        console.log(search_text);
-
-                      }
-                  }
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                  var updatedTablePartial = xhr.responseText;
+                  updateDOMTable(updatedTablePartial);
+                }
               };
 
-              var data = JSON.stringify({"htmlstr": search_text});
-              xhr.send(data);
-              console.log("yer");
+              xhr.send();
           }
       </script>
     </div>
@@ -59,6 +58,7 @@
       <input type="text" placeholder="(Field):(Value)" id="insertbar">
       <button onclick="commandServerToRender2()"> Insert! </button>
       <script>
+
           function commandServerToRender2() {
               insert_text = document.getElementById("insertbar").value;
 
@@ -160,6 +160,7 @@
 
     <button onclick="location.href = '/query1';" id="myButton" class="float-left submit-button" >Adv Query 1</button>
     <button onclick="location.href = '/query2';" id="myButton" class="float-left submit-button" >Adv Query 2</button>
+    <button onclick="location.href = '/transaction';" id="myButton" class="float-left submit-button" >Transaction</button>
     <br><br>
     <button onclick="location.href = '/athlete';" id="myButton" class="float-left submit-button" >Athletes</button>
     <button onclick="location.href = '/coach';" id="myButton" class="float-left submit-button" >Coaches</button>
@@ -167,8 +168,8 @@
     <br><br>
     
     
-    <div class="container table-responsive">          
-    <table class="table">
+    <div class="container table-responsive" id="tableContainer">          
+    <table class="table" id="table1">
         <thead>
         <tr>
     

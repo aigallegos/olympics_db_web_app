@@ -1,5 +1,5 @@
 """ Specifies routing for the application"""
-from flask import render_template, request, jsonify, redirect
+from flask import render_template, request, jsonify, redirect, render_template_string
 from app import app
 from app import database as dbs
 #from where_gen import whereGenerator, setGenerator
@@ -17,11 +17,6 @@ def query1():
 def query2():
     items = dbs.q2()
     return render_template("a2.html", items=items)
-
-@app.route("/transaction")
-def transaction():
-    items = dbs.transaction_db()
-    return render_template("transaction.html", items=items)
 
 @app.route("/athlete")
 def Athlete():
@@ -77,6 +72,16 @@ def Country_delete():
     return jsonify(result)
 
 #searches
+
+@app.route('/athlete/update_table_partial', methods=['GET'])
+def update_table_partial():
+    search_text = request.args.get('search_text')
+
+    items = dbs.filter_from_table(search_text,0)
+
+    rendered_template = render_template_string('<table class="table"><thead><tr><th class="athlete-name">Athlete Name</th><th class="country-cca3">Country CCA3</th><th class="disciple-name">Discipline Name</th></tr></thead><tbody>{% for item in items %}<tr><td>{{item.name}}</td><td>{{item.CCA3}}</td><td>{{item.discipline_name}}</td></tr>{% endfor %}</tbody></table>', items=items)
+    print(rendered_template)
+    return rendered_template
 
 @app.route("/athlete/search", methods=['GET'])
 def Athlete_search():
