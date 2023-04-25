@@ -73,19 +73,15 @@ def Country_delete():
 
 #searches
 
-@app.route("/athlete/search", methods=['POST'])
+@app.route("/athlete/search", methods=['GET'])
 def Athlete_search():
-    items = ""
-    try:
-        json = request.get_json()
-        search = json['htmlstr']
-        items = dbs.filter_from_table(search,0)
-        print(items)
-        result = {'success': True, 'response': 'Removed task'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
-    print(result)
-    return render_template("athlete.html", items=items)
+    search_text = request.args.get('search_text')
+
+    items = dbs.filter_from_table(search_text,0)
+
+    rendered_template = render_template_string("table_partial.html", items=items)
+    return rendered_template
+
 
 @app.route("/coach/search", methods=['POST'])
 def Coach_search():

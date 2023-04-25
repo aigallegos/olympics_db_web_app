@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+  <tr>
+
+      <th class="athlete-name">Athlete Name</th>
+      <th class="country-cca3">Country CCA3</th>
+      <th class="disciple-name">Discipline Name</th>
+     
+  </tr>
+  </thead>
+
+  <tbody>
+  {% for item in items %}
+      <tr>
+          <td>{{item.name}}</td>
+          <td>{{item.CCA3}}</td>
+          <td>{{item.discipline_name}}</td>
+      </tr>
+  {% endfor %}
+  
+  </tbody>
+</table>
