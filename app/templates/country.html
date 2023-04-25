@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title></title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" href="{{ url_for('static', filename='img/cs.ico') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/custom.css') }}">
+
+    </head>
+
+    <body>
+
+    <main role="main" class="container extra-bottom">
+      <h1 class="mt-5">Tokyo Olympics</h1>
+    </main>
+
+    <div>
+      <input type="text" name="JohnJohnson" placeholder="(Field):(Value)" id="searchbar">
+      <button onclick="commandServerToRender()"> Search! </button>
+      <script>
+          function updateDOMTable(updatedTablePartial) {
+            console.log(updatedTablePartial);
+            var currentTable = document.getElementById("table1");
+            currentTable.innerHTML = updatedTablePartial;
+          }
+
+          function commandServerToRender1() {
+              search_text = document.getElementById("searchbar").value;
+
+              var xhr = new XMLHttpRequest();
+              var url = "/country/search?search_text=" + encodeURIComponent(search_text)
+
+              xhr.open("GET", url, true);
+
+              xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                  var updatedTablePartial = xhr.responseText;
+                  updateDOMTable(updatedTablePartial);
+                }
+              };
+
+              xhr.send();
+          }
+      </script>
+    </div>
+
+    <div>
+      <input type="text" placeholder="(Field):(Value)" id="insertbar">
+      <button onclick="commandServerToRender()"> Insert! </button>
+      <script>
+          function commandServerToRender() {
+              insert_text = document.getElementById("insertbar").value;
+
+              var xhr = new XMLHttpRequest();
+              var url = "/country/insert";
+
+              xhr.open("POST", url, true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                      if (xhr.responseText == '0') {
+                        console.log(insert_text);
+
+                      } else {
+                        console.log("fai");
+                        console.log(insert_text);
+
+                      }
+                  }
+              };
+
+              var data = JSON.stringify({"htmlstr": insert_text});
+              xhr.send(data);
+              console.log("yer");
+          }
+      </script>
+    </div>
+
+    <div>
+      <input type="text" placeholder="(Field):(Value)" id="deletebar">
+      <button onclick="commandServerToRender()"> Delete! </button>
+      <script>
+          function commandServerToRender() {
+              delete_text = document.getElementById("deletebar").value;
+
+              var xhr = new XMLHttpRequest();
+              var url = "/country/delete";
+
+              xhr.open("POST", url, true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                      if (xhr.responseText == '0') {
+                        console.log(delete_text);
+
+                      } else {
+                        console.log("fai");
+                        console.log(delete_text);
+
+                      }
+                  }
+              };
+
+              var data = JSON.stringify({"htmlstr": delete_text});
+              xhr.send(data);
+              console.log("yer");
+          }
+      </script>
+    </div>
+
+    <div>
+      <input type="text" placeholder="(Field):(Value)" id="updatesetbar">
+      <input type="text" placeholder="(Field):(Value)" id="updatewherebar">
+      <button onclick="commandServerToRender()"> Update! </button>
+      <script>
+          function commandServerToRender() {
+              updateset_text = document.getElementById("updatesetbar").value;
+              updatewhere_text = document.getElementById("updatewherebar").value;
+
+              var xhr = new XMLHttpRequest();
+              var url = "/country/update";
+
+              xhr.open("POST", url, true);
+              xhr.setRequestHeader("Content-Type", "application/json");
+
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                      if (xhr.responseText == '0') {
+                        console.log(updateset_text);
+                        console.log(updatewhere_text);
+
+                      } else {
+                        console.log("fai");
+                        console.log(updateset_text);
+                        console.log(updatewhere_text);
+
+                      }
+                  }
+              };
+
+              var data = JSON.stringify({"htmlstr1": updateset_text, "htmlstr2": updatewhere_text});
+              xhr.send(data);
+              console.log("yer");
+          }
+      </script>
+    </div>
+
+    <button onclick="location.href = '/query1';" id="myButton" class="float-left submit-button" >Adv Query 1</button>
+    <button onclick="location.href = '/query2';" id="myButton" class="float-left submit-button" >Adv Query 2</button>
+    <button onclick="location.href = '/transaction';" id="myButton" class="float-left submit-button" >Transaction</button>
+    <br><br>
+    <button onclick="location.href = '/athlete';" id="myButton" class="float-left submit-button" >Athletes</button>
+    <button onclick="location.href = '/coach';" id="myButton" class="float-left submit-button" >Coaches</button>
+    <button onclick="location.href = '/country';" id="myButton" class="float-left submit-button" >Country</button>
+    <br><br>
+    
+
+    <div class="container table-responsive">          
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="country_cca3">Country</th>
+            <th class="rank_p">Rank of Population</th>
+            <th class="continent">Continent</th>
+            <th class="pop-20">Population 2020</th>
+            <th class="pop-22">Population 2022</th>
+            <th class="rank-m">Rank of Medals</th>
+            <th class="num">Number of Gold Medals</th>
+            <th class="num-silver">Number of Silver Medals</th>
+            <th class="num-bronze">Number of Bronze Medals</th>
+            <th class="num-total">Number of Total Medals</th>
+        
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td>{{item.CCA3}}</td>
+                <td>{{item.rank_of_population}}</td>
+                <td>{{item.continent}}</td>
+                <td>{{item.population_2020}}</td>
+                <td>{{item.population_2022}}</td>
+                <td>{{item.rank_of_medals}}</td>
+                <td>{{item.num_gold_medals}}</td>
+                <td>{{item.num_silver_medals}}</td>
+                <td>{{item.num_bronze_medals}}</td>
+                <td>{{item.num_total_medals}}</td>
+                
+            </tr>
+        {% endfor %}
+        
+        </tbody>
+    </table>
+    </div>
+
+  </body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+</html>
