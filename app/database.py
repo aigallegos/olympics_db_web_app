@@ -169,7 +169,7 @@ def insert_db(table, value_string):
     conn.execute(insert_query)
     conn.close()
     
- def transaction_db() -> dict:
+def transaction_db() -> dict:
     conn = db.connect()
     conn.row_factory = db.Row
 
