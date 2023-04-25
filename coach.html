@@ -25,31 +25,28 @@
       <input type="text" placeholder="(Field):(Value)" id="searchbar">
       <button onclick="commandServerToRender()"> Search! </button>
       <script>
-          function commandServerToRender() {
+          function updateDOMTable(updatedTablePartial) {
+            console.log(updatedTablePartial);
+            var currentTable = document.getElementById("table1");
+            currentTable.innerHTML = updatedTablePartial;
+          }
+
+          function commandServerToRender1() {
               search_text = document.getElementById("searchbar").value;
 
               var xhr = new XMLHttpRequest();
-              var url = "/coach/search";
+              var url = "/coach/search?search_text=" + encodeURIComponent(search_text)
 
-              xhr.open("POST", url, true);
-              xhr.setRequestHeader("Content-Type", "application/json");
+              xhr.open("GET", url, true);
 
               xhr.onreadystatechange = function () {
-                  if (xhr.readyState === 4 && xhr.status === 200) {
-                      if (xhr.responseText == '0') {
-                        console.log(search_text);
-
-                      } else {
-                        console.log("fai");
-                        console.log(search_text);
-
-                      }
-                  }
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                  var updatedTablePartial = xhr.responseText;
+                  updateDOMTable(updatedTablePartial);
+                }
               };
 
-              var data = JSON.stringify({"htmlstr": search_text});
-              xhr.send(data);
-              console.log("yer");
+              xhr.send();
           }
       </script>
     </div>

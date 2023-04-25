@@ -73,51 +73,33 @@ def Country_delete():
 
 #searches
 
-@app.route('/athlete/update_table_partial', methods=['GET'])
-def update_table_partial():
-    search_text = request.args.get('search_text')
-
-    items = dbs.filter_from_table(search_text,0)
-
-    rendered_template = render_template_string('<table class="table"><thead><tr><th class="athlete-name">Athlete Name</th><th class="country-cca3">Country CCA3</th><th class="disciple-name">Discipline Name</th></tr></thead><tbody>{% for item in items %}<tr><td>{{item.name}}</td><td>{{item.CCA3}}</td><td>{{item.discipline_name}}</td></tr>{% endfor %}</tbody></table>', items=items)
-    print(rendered_template)
-    return rendered_template
-
 @app.route("/athlete/search", methods=['GET'])
 def Athlete_search():
     search_text = request.args.get('search_text')
 
     items = dbs.filter_from_table(search_text,0)
 
-    rendered_template = render_template_string("table_partial.html", items=items)
+    rendered_template = render_template_string('<table class="table"><thead><tr><th class="athlete-name">Athlete Name</th><th class="country-cca3">Country CCA3</th><th class="disciple-name">Discipline Name</th></tr></thead><tbody>{% for item in items %}<tr><td>{{item.name}}</td><td>{{item.CCA3}}</td><td>{{item.discipline_name}}</td></tr>{% endfor %}</tbody></table>', items=items)
     return rendered_template
 
 
 @app.route("/coach/search", methods=['POST'])
 def Coach_search():
-    items = ""
-    try:
-        json = request.get_json()
-        search = json['htmlstr']
-        items = dbs.filter_from_table(search,1)
-        result = {'success': True, 'response': 'Removed task'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
-    print(result)
-    return render_template("coach.html", items=items)
+    search_text = request.args.get('search_text')
+
+    items = dbs.filter_from_table(search_text,1)
+
+    rendered_template = render_template_string('<table class="table"><thead><tr><th class="athlete-name">Athlete Name</th><th class="country-cca3">Country CCA3</th><th class="disciple-name">Discipline Name</th></tr></thead><tbody>{% for item in items %}<tr><td>{{item.name}}</td><td>{{item.CCA3}}</td><td>{{item.discipline_name}}</td></tr>{% endfor %}</tbody></table>', items=items)
+    return rendered_template
 
 @app.route("/country/search", methods=['POST'])
 def Country_search():
-    items = ""
-    try:
-        json = request.get_json()
-        search = json['htmlstr']
-        items = dbs.filter_from_table(search,2)
-        result = {'success': True, 'response': 'Removed task'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
-    print(result)
-    return render_template("country.html", items=items)
+    search_text = request.args.get('search_text')
+
+    items = dbs.filter_from_table(search_text,2)
+
+    rendered_template = render_template_string('<table class="table"><thead><tr><th class="athlete-name">Athlete Name</th><th class="country-cca3">Country CCA3</th><th class="disciple-name">Discipline Name</th></tr></thead><tbody>{% for item in items %}<tr><td>{{item.name}}</td><td>{{item.CCA3}}</td><td>{{item.discipline_name}}</td></tr>{% endfor %}</tbody></table>', items=items)
+    return rendered_template
 
 @app.route("/athlete/update", methods=['POST'])
 def Athlete_update():
