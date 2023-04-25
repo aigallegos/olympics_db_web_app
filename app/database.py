@@ -168,3 +168,81 @@ def insert_db(table, value_string):
     print(insert_query)
     conn.execute(insert_query)
     conn.close()
+    
+ def transaction_db() -> dict:
+    conn = db.connect()
+    conn.row_factory = db.Row
+
+    try:
+        # Disable auto-commit
+        conn.execute("BEGIN")
+
+        # Query 1
+        query1 = f"""
+                    SELECT Country.CCA3, Athlete.name 
+                    FROM Athlete INNER JOIN Country ON Athlete.CCA3= Country.CCA3
+                    WHERE Country.CCA3 LIKE 'B%%'
+                    GROUP BY Country.CCA3, Athlete.name 
+                    ORDER BY Athlete.name DESC;
+                    """
+        query_results1 = conn.execute(query1).fetchall()
+
+        # Query 2
+        query2 = f"""
+                    SELECT discipline_name 
+                    FROM Athlete 
+                    UNION
+                    SELECT name 
+                    FROM (
+                    SELECT Discipline.name, Discipline.male_amt, Discipline.female_amt 
+                    FROM Discipline 
+                    INNER JOIN Athlete ON Athlete.discipline_name = Discipline.name
+                    WHERE Athlete.name LIKE 'A%%' AND  Discipline.male_amt > Discipline.female_amt 
+                    ) AS derived_table_alias
+                    ORDER BY discipline_name DESC;
+                    """
+        query_results2 = conn.execute(query2).fetchall()
+
+        # Check requirements and execute additional query
+        if len(query_results1) >= 10 and query_results2:
+            new_discipline_name = query_results2[0]['discipline_name']
+            new_discipline_id = len(query_results2) + 1
+
+            insert_query = f"""
+                            INSERT INTO Discipline (id, name)
+                            VALUES ({new_discipline_id}, '{new_discipline_name}');
+                            """
+            conn.execute(insert_query)
+
+        # Commit the changes
+        conn.execute("COMMIT")
+
+        # Processing results
+        athlete_items = []
+        for result in query_results1:
+            item = {
+                "Country": result[0],
+                "Name": result[1]
+            }
+            athlete_items.append(item)
+
+        discipline_items = []
+        for result in query_results2:
+            item = {
+                "DisciplineName": result[0]
+            }
+            discipline_items.append(item)
+
+    except Exception as e:
+        # Rollback changes in case of an exception
+        conn.execute("ROLLBACK")
+        raise e
+
+    finally:
+        # Close the connection
+        conn.close()
+
+    return {"athlete_items": athlete_items, "discipline_items": discipline_items}
+
+results = execute_queries()
+print(results)
