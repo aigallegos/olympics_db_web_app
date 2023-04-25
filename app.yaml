@@ -1,0 +1,13 @@
+runtime: python38
+
+instance_class: F1
+
+env_variables: 
+  MYSQL_USER: 'root'
+  MYSQL_PASSWORD: 'Password'
+  MYSQL_DB: 'cs411proj'
+  MYSQL_HOST: '34.173.205.39'
+
+handlers:
+
+- url: static/scripts
