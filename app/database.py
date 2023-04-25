@@ -244,5 +244,5 @@ def transaction_db() -> dict:
 
     return {"athlete_items": athlete_items, "discipline_items": discipline_items}
 
-results = execute_queries()
+results = transaction_db()
 print(results)
