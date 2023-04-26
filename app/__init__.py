@@ -25,7 +25,10 @@ def init_connection_engine():
             username=os.environ.get('MYSQL_USER'),
             password=os.environ.get('MYSQL_PASSWORD'),
             database=os.environ.get('MYSQL_DB'),
-            host=os.environ.get('MYSQL_HOST')
+            host=os.environ.get('MYSQL_HOST'),
+            query={
+            "unix_socket": "/cloudsql/{}".format(os.environ.get('INSTANCE_CONNECTION_NAME'))
+            }
         )
     )
 
