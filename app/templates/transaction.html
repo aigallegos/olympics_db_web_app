@@ -27,9 +27,11 @@
         <table class="table">
             <thead>
             <tr>
-                <th class="portfolio-id">Country CCA3</th>
-             
+                <th class="athlete_items"> Athlete </th>
+                <th class="discipline_items"> Discipline </th>
                 
+             
+   
                 <!-- <th class="status">Status</th> -->
                 <!-- <th class="update">Edit</th>
                 <th class="update">Remove</th> -->
@@ -39,7 +41,7 @@
             <tbody>
             {% for item in items %}
                 <tr>
-                    <td>{{item.Username}}</td>
+                    <td>{{item.Name}}</td>
     
                     <!-- {% if item.status == "In Progress" %}
                         <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
