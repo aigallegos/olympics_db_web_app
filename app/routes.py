@@ -11,6 +11,13 @@ def query1():
 
     items = dbs.q1()
     return render_template("a1.html", items=items)
+
+@app.route("/transaction")
+def transaction():
+    
+
+    items = dbs.transaction_db()
+    return render_template("transaction.html", items=items)
     
 
 @app.route("/query2")
