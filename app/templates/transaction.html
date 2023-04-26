@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>Demo: TODO</title>
@@ -27,51 +26,27 @@
         <table class="table">
             <thead>
             <tr>
-                <th class="athlete_items"> Athlete </th>
-                <th class="discipline_items"> Discipline </th>
-                
-             
-   
-                <!-- <th class="status">Status</th> -->
-                <!-- <th class="update">Edit</th>
-                <th class="update">Remove</th> -->
+              
+                <th class="portfolio-id">Athlete Name</th>
+                <th class="athlete-name">Discipline Name</th>
+                <th class="transaction-amount">Transaction Amount</th>
+                <th class="transaction-type">Transaction Type</th>
             </tr>
             </thead>
     
             <tbody>
             {% for item in items %}
                 <tr>
-                    <td>{{item.Name}}</td>
-                     <td>{{item.Discipline}}</td>
-    
-                    <!-- {% if item.status == "In Progress" %}
-                        <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                    {%endif%}
-                    {% if item.status == "Todo" %}
-                        <td><button type="button" class="btn btn-outline-secondary btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                    {%endif%}
-                    {% if item.status == "Complete" %}
-                        <td><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                    {%endif%} -->
-                    
-                    <!-- <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#portfolio-modal" data-source="{{item.id}}" data-content="{{item.PortfolioName}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td> -->
-    
-                    <!-- <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td> -->
+                    <td>{{item.athlete_name}}</td>
+                    <td>{{item.discipline_name}}</td>
+                    <td>{{item.transaction_amount}}</td>
+                    <td>{{item.transaction_type}}</td>
                 </tr>
             {% endfor %}
             
             </tbody>
         </table>
-        </div>
-
-
-
-    <!-- <footer class="footer">
-      <div class="container">
-            <p class="text-muted"><small>App developed for CS411 UIUC by @tcheng10</small></p>
-      </div>
-    </footer> -->
-  </body>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
