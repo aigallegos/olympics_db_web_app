@@ -7,9 +7,14 @@ from app import database as dbs
 
 @app.route("/query1")
 def query1():
-    
-
-    items = dbs.q1()
+    try:
+        json = request.get_json()
+        search = json['htmlstr']
+        items = dbs.q1(search)
+        result = {'success': True, 'response': 'Removed task'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong'}
+    print(result)
     return render_template("a1.html", items=items)
 
 @app.route("/transaction")
@@ -22,7 +27,14 @@ def transaction():
 
 @app.route("/query2")
 def query2():
-    items = dbs.q2()
+    try:
+        json = request.get_json()
+        search = json['htmlstr']
+        items = dbs.q2(search)
+        result = {'success': True, 'response': 'Removed task'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong'}
+    print(result)
     return render_template("a2.html", items=items)
 
 @app.route("/")
@@ -95,7 +107,7 @@ def Athlete_search():
     return rendered_template
 
 
-@app.route("/coach/search", methods=['POST'])
+@app.route("/coach/search", methods=['GET'])
 def Coach_search():
     search_text = request.args.get('search_text')
 
@@ -104,7 +116,7 @@ def Coach_search():
     rendered_template = render_template_string('<table class="table"><thead><tr><th class="athlete-name">Athlete Name</th><th class="country-cca3">Country CCA3</th><th class="disciple-name">Discipline Name</th></tr></thead><tbody>{% for item in items %}<tr><td>{{item.name}}</td><td>{{item.CCA3}}</td><td>{{item.discipline_name}}</td></tr>{% endfor %}</tbody></table>', items=items)
     return rendered_template
 
-@app.route("/country/search", methods=['POST'])
+@app.route("/country/search", methods=['GET'])
 def Country_search():
     search_text = request.args.get('search_text')
 

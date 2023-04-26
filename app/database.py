@@ -6,12 +6,12 @@ from app.where_gen import whereGenerator,setGenerator,insertGenerator
 
 
 
-def q1()->dict: 
+def q1(starting_letters:str)->dict: 
     conn = db.connect() 
     query_users_apple = f"""
                         SELECT Country.CCA3, Athlete.name 
                         FROM Athlete INNER JOIN Country ON Athlete.CCA3= Country.CCA3
-                        WHERE Country.CCA3 LIKE 'B%%'
+                        WHERE Country.CCA3 LIKE '{starting_letters}%%'
                         GROUP BY Country.CCA3, Athlete.name 
                         ORDER BY Athlete.name DESC;
                         """
@@ -26,7 +26,7 @@ def q1()->dict:
         athlete_items.append(item)
     return  athlete_items
 
-def q2()->dict: 
+def q2(starting_letters:str)->dict: 
     conn = db.connect() 
     query = f"""
                         SELECT discipline_name 
@@ -37,7 +37,7 @@ def q2()->dict:
                         SELECT Discipline.name, Discipline.male_amt, Discipline.female_amt 
                         FROM Discipline 
                         INNER JOIN Athlete ON Athlete.discipline_name = Discipline.name
-                        WHERE Athlete.name LIKE 'A%%' AND  Discipline.male_amt > Discipline.female_amt 
+                        WHERE Athlete.name LIKE '{starting_letters}%%' AND  Discipline.male_amt > Discipline.female_amt 
                         ) AS derived_table_alias
                         ORDER BY discipline_name DESC"""
     query_results=conn.execute(query).fetchall()
