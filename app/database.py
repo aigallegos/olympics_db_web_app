@@ -9,7 +9,7 @@ from app.where_gen import whereGenerator,setGenerator,insertGenerator
 def q1()->dict: 
     conn = db.connect() 
     query_users_apple = f"""
-                        SELECT Country.CCA3, COUNT(Athlete.name) as athlete_count 
+                        SELECT Country.CCA3, Athlete.name 
                         FROM Athlete INNER JOIN Country ON Athlete.CCA3= Country.CCA3
                         WHERE Country.CCA3 LIKE 'B%%'
                         GROUP BY Country.CCA3, Athlete.name 
@@ -20,8 +20,8 @@ def q1()->dict:
     athlete_items = []
     for result in query_results:
         item = {
-            "Username": result[0],
-        "Portfolio ID" : result[1],
+            "Country": result[0],
+        "Name" : result[1]
         }
         athlete_items.append(item)
     return  athlete_items

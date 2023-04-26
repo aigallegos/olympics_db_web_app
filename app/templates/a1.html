@@ -28,7 +28,7 @@
             <thead>
             <tr>
                 <th class="portfolio-id">Country CCA3</th>
-             
+                <th class="athlete-name">Athlete Name</th>
                 
                 <!-- <th class="status">Status</th> -->
                 <!-- <th class="update">Edit</th>
@@ -39,21 +39,8 @@
             <tbody>
             {% for item in items %}
                 <tr>
-                    <td>{{item.Username}}</td>
-    
-                    <!-- {% if item.status == "In Progress" %}
-                        <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                    {%endif%}
-                    {% if item.status == "Todo" %}
-                        <td><button type="button" class="btn btn-outline-secondary btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                    {%endif%}
-                    {% if item.status == "Complete" %}
-                        <td><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                    {%endif%} -->
-                    
-                    <!-- <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#portfolio-modal" data-source="{{item.id}}" data-content="{{item.PortfolioName}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td> -->
-    
-                    <!-- <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td> -->
+                    <td>{{item.Country}}</td>
+                    <td>{{item.Name}}</td>
                 </tr>
             {% endfor %}
             

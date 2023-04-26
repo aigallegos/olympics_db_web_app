@@ -18,6 +18,11 @@ def query2():
     items = dbs.q2()
     return render_template("a2.html", items=items)
 
+@app.route("/")
+def root():
+    items = dbs.whole_table(0)
+    return render_template("athlete.html", items=items)
+
 @app.route("/athlete")
 def Athlete():
     items = dbs.whole_table(0)
