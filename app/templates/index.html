@@ -155,6 +155,8 @@
           }
       </script>
     </div>
+
+    <div>
     <input type="text" placeholder="(Field):(Value)" id="searchbarq1">
     <button onclick="myhref()" id="myButton" class="float-left submit-button" >Adv Query 1</button>
     <script>
@@ -186,6 +188,8 @@
         location.href = "/query1";
       }
     </script>
+    </div>
+    <div>
     <input type="text" placeholder="(Field):(Value)" id="searchbarq2">
     <button onclick="myhref2()" id="myButton" class="float-left submit-button" >Adv Query 2</button>
     <script>
@@ -201,11 +205,11 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 if (xhr.responseText == '0') {
-                  console.log(start1_text);
+                  console.log(start2_text);
 
                 } else {
                   console.log("fai");
-                  console.log(start1_text);
+                  console.log(start2_text);
 
                 }
             }
@@ -217,6 +221,7 @@
         location.href = "/query2";
       }
     </script>
+    </div>
     <button onclick="location.href = '/transaction';" id="myButton" class="float-left submit-button" >Transaction</button>
     <br><br>
     <button onclick="location.href = '/athlete';" id="myButton" class="float-left submit-button" >Athletes</button>
