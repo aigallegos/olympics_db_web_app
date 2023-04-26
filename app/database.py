@@ -155,21 +155,7 @@ def update_db(table, set_string, where_string):
     conn.execute(update_query)
     conn.close()
 
-def insert_db(table, value_string):
-
-    if table == "Athlete":
-        value_string = insertGenerator(value_string,0)
-    elif table == "Coach":
-        value_string = insertGenerator(value_string,1)
-    else:
-        value_string = insertGenerator(value_string,2)
-    conn = db.connect()
-    insert_query = f"INSERT INTO {table} VALUES({value_string});"
-    print(insert_query)
-    conn.execute(insert_query)
-    conn.close()
-    
-    def transaction_db() -> str:
+def transaction_db() -> dict:
     conn = db.connect()
     #conn.row_factory = db.Row
 
@@ -233,5 +219,16 @@ def insert_db(table, value_string):
             }
             discipline_items.append(item)
 
-        # Generate HTML code
-        html = "<!DOCTYPE html>\n<html>\n<head>\n\t<title>Transaction Results</title>\n</head>\n<body>\n\t<h1>Transaction Results</h1>\n\n\t<h2>Athlete Items</h2>\n\t<table>\n\t\t<tr>\n\t\t\t<th>Country</th>\n\t\t\t<th>Name</th>\
+    except Exception as e:
+        # Rollback changes in case of an exception
+        conn.execute("ROLLBACK")
+        raise e
+
+    finally:
+        # Close the connection
+        conn.close()
+
+    return {"athlete_items": athlete_items, "discipline_items": discipline_items}
+
+results = transaction_db()
+print(results)
