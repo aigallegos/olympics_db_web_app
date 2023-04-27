@@ -158,34 +158,11 @@
 
     <div>
     <input type="text" placeholder="(Field):(Value)" id="searchbarq1">
-    <button onclick="myhref()" id="myButton" class="float-left submit-button" >Adv Query 1</button>
+    <button onclick="myhref1()" id="myButton" class="float-left submit-button" >Adv Query 1</button>
     <script>
       function myhref1() { 
-        start1_text = document.getElementById("searchbarq1").value;
-        
-        var xhr = new XMLHttpRequest();
-        var url = "/query1";
-
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                if (xhr.responseText == '0') {
-                  console.log(start1_text);
-
-                } else {
-                  console.log("fai");
-                  console.log(start1_text);
-
-                }
-            }
-        };
-
-        var data = JSON.stringify({"htmlstr": start1_text});
-        xhr.send(data);
-
-        location.href = "/query1";
+        search_text = document.getElementById("searchbarq1").value;
+        location.href = "/query1/" + encodeURIComponent(search_text);
       }
     </script>
     </div>
@@ -194,31 +171,8 @@
     <button onclick="myhref2()" id="myButton" class="float-left submit-button" >Adv Query 2</button>
     <script>
       function myhref2() { 
-        start2_text = document.getElementById("searchbarq2").value;
-        
-        var xhr = new XMLHttpRequest();
-        var url = "/query2";
-
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                if (xhr.responseText == '0') {
-                  console.log(start2_text);
-
-                } else {
-                  console.log("fai");
-                  console.log(start2_text);
-
-                }
-            }
-        };
-
-        var data = JSON.stringify({"htmlstr": start2_text});
-        xhr.send(data);
-
-        location.href = "/query2";
+        search_text = document.getElementById("searchbarq2").value;
+        location.href = "/query2/" + encodeURIComponent(search_text);
       }
     </script>
     </div>

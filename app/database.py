@@ -21,7 +21,7 @@ def q1(starting_letters:str)->dict:
     for result in query_results:
         item = {
             "Country": result[0],
-        "Name" : result[1]
+            "Name" : result[1]
         }
         athlete_items.append(item)
     return  athlete_items
@@ -169,9 +169,9 @@ def transaction_db(country_code, discipline_name) -> dict:
                     FROM Athlete
                     INNER JOIN Country ON Athlete.CCA3 = Country.CCA3
                     INNER JOIN Discipline ON Athlete.discipline_name = Discipline.name
-                    WHERE Country.CCA3 = ? AND Discipline.name = ?;
+                    WHERE Country.CCA3 = {country_code} AND Discipline.name = "{discipline_name}";
                     """
-        query_results1 = conn.execute(query1, (country_code, discipline_name)).fetchall()
+        query_results1 = conn.execute(query1).fetchall()
 
         # Query 2: Find coaches from a certain country and discipline
         query2 = f"""
@@ -179,9 +179,9 @@ def transaction_db(country_code, discipline_name) -> dict:
                     FROM Coach
                     INNER JOIN Country ON Coach.CCA3 = Country.CCA3
                     INNER JOIN Discipline ON Coach.discipline_name = Discipline.name
-                    WHERE Country.CCA3 = ? AND Discipline.name = ?;
+                    WHERE Country.CCA3 = {country_code} AND Discipline.name = "{discipline_name}";
                     """
-        query_results2 = conn.execute(query2, (country_code, discipline_name)).fetchall()
+        query_results2 = conn.execute(query2).fetchall()
 
         # Check requirements and execute additional query
         if query_results1 and query_results2:
@@ -190,9 +190,9 @@ def transaction_db(country_code, discipline_name) -> dict:
 
             insert_query = f"""
                             INSERT INTO Athlete_Coach (athlete_name, coach_name)
-                            VALUES (?, ?);
+                            VALUES ("{athlete_name}", "{coach_name}");
                             """
-            conn.execute(insert_query, (athlete_name, coach_name))
+            conn.execute(insert_query)
 
         # Commit the changes
         conn.execute("COMMIT")
@@ -227,5 +227,3 @@ def transaction_db(country_code, discipline_name) -> dict:
 
     return {"athlete_items": athlete_items, "coach_items": coach_items}
 
-results = transaction_db("USA", "Swimming")
-print(results)

@@ -5,36 +5,32 @@ from app import database as dbs
 #from where_gen import whereGenerator, setGenerator
 
 
-@app.route("/query1")
-def query1():
-    try:
-        json = request.get_json()
-        search = json['htmlstr']
-        items = dbs.q1(search)
-        result = {'success': True, 'response': 'Removed task'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
-    print(result)
+@app.route("/query1/<search>")
+def query1(search):
+    # try:
+    items = dbs.q1(search)
+    # result = {'success': True, 'response': 'Removed task'}
+    # except:
+    # result = {'success': False, 'response': 'Something went wrong'}
+    # print(result)
     return render_template("a1.html", items=items)
 
 @app.route("/transaction")
 def transaction():
-    
-
+    # json = request.get_json()
+    # search = json['htmlstr']
     items = dbs.transaction_db()
-    return render_template("transaction.html", items=items)
+    return render_template("transaction.html", results=items)
     
 
-@app.route("/query2")
-def query2():
-    try:
-        json = request.get_json()
-        search = json['htmlstr']
-        items = dbs.q2(search)
-        result = {'success': True, 'response': 'Removed task'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
-    print(result)
+@app.route("/query2/<search>")
+def query2(search):
+    # try:
+    items = dbs.q2(search)
+    # result = {'success': True, 'response': 'Removed task'}
+    # except:
+    #     result = {'success': False, 'response': 'Something went wrong'}
+    # print(result)
     return render_template("a2.html", items=items)
 
 @app.route("/")
