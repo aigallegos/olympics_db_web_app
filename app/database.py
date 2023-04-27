@@ -162,7 +162,6 @@ def transaction_db(country_code, discipline_name) -> dict:
         query = f"CALL my_transaction('{country_code}', '{discipline_name}')"
         query_results1 = conn.execute(query).fetchall()
 
-        conn.commit_prepared
 
         # Processing results
         results = []
