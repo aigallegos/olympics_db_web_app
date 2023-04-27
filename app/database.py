@@ -156,7 +156,7 @@ def update_db(table, set_string, where_string):
     conn.close()
 
 def transaction_db(country_code, discipline_name) -> dict:
-    conn = db.connect()  # Use an in-memory SQLite database for demonstration
+    conn = db.connect()
     #conn.row_factory = db.Row
 
     try:
