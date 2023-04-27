@@ -217,5 +217,6 @@ def transaction_db(country_code, discipline_name) -> dict:
     finally:
         # Close the connection
         conn.close()
-
-    return results
+results = transaction_db("USA", "Swimming")
+print(results)
+return results
