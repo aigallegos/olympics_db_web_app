@@ -155,8 +155,26 @@
       </script>
     </div>
 
-    <button onclick="location.href = '/query1';" id="myButton" class="float-left submit-button" >Adv Query 1</button>
-    <button onclick="location.href = '/query2';" id="myButton" class="float-left submit-button" >Adv Query 2</button>
+    <div>
+      <input type="text" placeholder="(Field):(Value)" id="searchbarq1">
+      <button onclick="myhref1()" id="myButton" class="float-left submit-button" >Adv Query 1</button>
+      <script>
+        function myhref1() { 
+          search_text = document.getElementById("searchbarq1").value;
+          location.href = "/query1/" + encodeURIComponent(search_text);
+        }
+      </script>
+      </div>
+      <div>
+      <input type="text" placeholder="(Field):(Value)" id="searchbarq2">
+      <button onclick="myhref2()" id="myButton" class="float-left submit-button" >Adv Query 2</button>
+      <script>
+        function myhref2() { 
+          search_text = document.getElementById("searchbarq2").value;
+          location.href = "/query2/" + encodeURIComponent(search_text);
+        }
+      </script>
+      </div>
     <button onclick="location.href = '/transaction';" id="myButton" class="float-left submit-button" >Transaction</button>
     <br><br>
     <button onclick="location.href = '/athlete';" id="myButton" class="float-left submit-button" >Athletes</button>
