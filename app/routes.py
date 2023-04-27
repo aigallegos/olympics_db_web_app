@@ -12,7 +12,7 @@ def query1(search):
 
 @app.route('/transaction/<country_code>/<discipline_name>')
 def transaction_route(country_code, discipline_name):
-    results = transaction_db(country_code, discipline_name)
+    results = dbs.transaction_db(country_code, discipline_name)
     return render_template("transaction_results.html", results=results)
     
 

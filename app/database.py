@@ -159,55 +159,22 @@ def transaction_db(country_code, discipline_name) -> dict:
     conn = db.connect()
 
     try:
-        # Disable auto-commit
-        conn.execute("BEGIN")
+        query = f"CALL my_transaction('{country_code}', '{discipline_name}')"
+        query_results1 = conn.execute(query).fetchall()
 
-        # Query 1: Find athletes from a certain country and discipline
-        query1 = f"""
-                    SELECT Athlete.name, Country.CCA3, Discipline.name AS discipline_name
-                    FROM Athlete
-                    INNER JOIN Country ON Athlete.CCA3 = Country.CCA3
-                    INNER JOIN Discipline ON Athlete.discipline_name = Discipline.name
-                    WHERE Country.CCA3 = "{country_code}" AND Discipline.name = "{discipline_name}";
-                    """
-        query_results1 = conn.execute(query1).fetchall()
-
-        # Query 2: Find coaches from a certain country and discipline
-        query2 = f"""
-                    SELECT Coach.name, Country.CCA3, Discipline.name AS discipline_name
-                    FROM Coach
-                    INNER JOIN Country ON Coach.CCA3 = Country.CCA3
-                    INNER JOIN Discipline ON Coach.discipline_name = Discipline.name
-                    WHERE Country.CCA3 = "{country_code}" AND Discipline.name = "{discipline_name}";
-                    """
-        query_results2 = conn.execute(query2).fetchall()
-
-        # Commit the changes
-        conn.execute("COMMIT")
+        conn.commit_prepared
 
         # Processing results
-        results = {}
+        results = []
         if query_results1:
-            athlete_items = []
             for result in query_results1:
                 item = {
                     "name": result[0],
                     "CCA3": result[1],
                     "discipline_name": result[2]
                 }
-                athlete_items.append(item)
-            results["athlete_items"] = athlete_items
+                results.append(item)
 
-        if query_results2:
-            coach_items = []
-            for result in query_results2:
-                item = {
-                    "Name": result[0],
-                    "CCA3": result[1],
-                    "discipline_name": result[2]
-                }
-                coach_items.append(item)
-            results["coach_items"] = coach_items
 
     except Exception as e:
         # Rollback changes in case of an exception
@@ -217,6 +184,5 @@ def transaction_db(country_code, discipline_name) -> dict:
     finally:
         # Close the connection
         conn.close()
-results = transaction_db("USA", "Swimming")
-print(results)
-return results
+
+    return results
