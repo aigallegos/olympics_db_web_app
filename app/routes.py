@@ -5,36 +5,20 @@ from app import database as dbs
 #from where_gen import whereGenerator, setGenerator
 
 
-@app.route("/query1")
-def query1():
-    try:
-        json = request.get_json()
-        search = json['htmlstr']
-        items = dbs.q1(search)
-        result = {'success': True, 'response': 'Removed task'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
-    print(result)
+@app.route("/query1/<search>")
+def query1(search):
+    items = dbs.q1(search)
     return render_template("a1.html", items=items)
 
-@app.route("/transaction")
-def transaction():
+@app.route('/transaction/<country_code>/<discipline_name>')
+def transaction_route(country_code, discipline_name):
+    results = transaction_db(country_code, discipline_name)
+    return render_template("transaction_results.html", results=results)
     
 
-    items = dbs.transaction_db()
-    return render_template("transaction.html", items=items)
-    
-
-@app.route("/query2")
-def query2():
-    try:
-        json = request.get_json()
-        search = json['htmlstr']
-        items = dbs.q2(search)
-        result = {'success': True, 'response': 'Removed task'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
-    print(result)
+@app.route("/query2/<search>")
+def query2(search):
+    items = dbs.q2(search)
     return render_template("a2.html", items=items)
 
 @app.route("/")

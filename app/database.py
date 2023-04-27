@@ -21,7 +21,7 @@ def q1(starting_letters:str)->dict:
     for result in query_results:
         item = {
             "Country": result[0],
-        "Name" : result[1]
+            "Name" : result[1]
         }
         athlete_items.append(item)
     return  athlete_items
@@ -155,69 +155,59 @@ def update_db(table, set_string, where_string):
     conn.execute(update_query)
     conn.close()
 
-def transaction_db() -> dict:
+def transaction_db(country_code, discipline_name) -> dict:
     conn = db.connect()
-    #conn.row_factory = db.Row
 
     try:
         # Disable auto-commit
         conn.execute("BEGIN")
 
-        # Query 1
+        # Query 1: Find athletes from a certain country and discipline
         query1 = f"""
-                    SELECT Country.CCA3, Athlete.name 
-                    FROM Athlete INNER JOIN Country ON Athlete.CCA3= Country.CCA3
-                    WHERE Country.CCA3 LIKE 'B%%'
-                    GROUP BY Country.CCA3, Athlete.name 
-                    ORDER BY Athlete.name DESC;
+                    SELECT Athlete.name, Country.CCA3, Discipline.name AS discipline_name
+                    FROM Athlete
+                    INNER JOIN Country ON Athlete.CCA3 = Country.CCA3
+                    INNER JOIN Discipline ON Athlete.discipline_name = Discipline.name
+                    WHERE Country.CCA3 = "{country_code}" AND Discipline.name = "{discipline_name}";
                     """
         query_results1 = conn.execute(query1).fetchall()
 
-        # Query 2
+        # Query 2: Find coaches from a certain country and discipline
         query2 = f"""
-                    SELECT discipline_name 
-                    FROM Athlete 
-                    UNION
-                    SELECT name 
-                    FROM (
-                    SELECT Discipline.name, Discipline.male_amt, Discipline.female_amt 
-                    FROM Discipline 
-                    INNER JOIN Athlete ON Athlete.discipline_name = Discipline.name
-                    WHERE Athlete.name LIKE 'A%%' AND  Discipline.male_amt > Discipline.female_amt 
-                    ) AS derived_table_alias
-                    ORDER BY discipline_name DESC;
+                    SELECT Coach.name, Country.CCA3, Discipline.name AS discipline_name
+                    FROM Coach
+                    INNER JOIN Country ON Coach.CCA3 = Country.CCA3
+                    INNER JOIN Discipline ON Coach.discipline_name = Discipline.name
+                    WHERE Country.CCA3 = "{country_code}" AND Discipline.name = "{discipline_name}";
                     """
         query_results2 = conn.execute(query2).fetchall()
-
-        # Check requirements and execute additional query
-        if len(query_results1) >= 10 and query_results2:
-            new_discipline_name = query_results2[0]['discipline_name']
-            new_discipline_id = len(query_results2) + 1
-
-            insert_query = f"""
-                            INSERT IGNORE INTO Discipline (name)
-                            VALUES ('{new_discipline_name}');
-                            """
-            conn.execute(insert_query)
 
         # Commit the changes
         conn.execute("COMMIT")
 
         # Processing results
-        athlete_items = []
-        for result in query_results1:
-            item = {
-                "Country": result[0],
-                "Name": result[1]
-            }
-            athlete_items.append(item)
+        results = {}
+        if query_results1:
+            athlete_items = []
+            for result in query_results1:
+                item = {
+                    "name": result[0],
+                    "CCA3": result[1],
+                    "discipline_name": result[2]
+                }
+                athlete_items.append(item)
+            results["athlete_items"] = athlete_items
 
-        discipline_items = []
-        for result in query_results2:
-            item = {
-                "DisciplineName": result[0]
-            }
-            discipline_items.append(item)
+        if query_results2:
+            coach_items = []
+            for result in query_results2:
+                item = {
+                    "Name": result[0],
+                    "CCA3": result[1],
+                    "discipline_name": result[2]
+                }
+                coach_items.append(item)
+            results["coach_items"] = coach_items
 
     except Exception as e:
         # Rollback changes in case of an exception
@@ -227,8 +217,6 @@ def transaction_db() -> dict:
     finally:
         # Close the connection
         conn.close()
-
-    return {"athlete_items": athlete_items, "discipline_items": discipline_items}
-
-results = transaction_db()
+results = transaction_db("USA", "Swimming")
 print(results)
+return results
