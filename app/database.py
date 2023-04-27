@@ -157,7 +157,6 @@ def update_db(table, set_string, where_string):
 
 def transaction_db(country_code, discipline_name) -> dict:
     conn = db.connect()
-    #conn.row_factory = db.Row
 
     try:
         # Disable auto-commit
@@ -183,38 +182,32 @@ def transaction_db(country_code, discipline_name) -> dict:
                     """
         query_results2 = conn.execute(query2).fetchall()
 
-        # Check requirements and execute additional query
-        if query_results1 and query_results2:
-            athlete_name = query_results1[0]['name']
-            coach_name = query_results2[0]['name']
-
-            insert_query = f"""
-                            INSERT INTO Athlete_Coach (athlete_name, coach_name)
-                            VALUES ("{athlete_name}", "{coach_name}");
-                            """
-            conn.execute(insert_query)
-
         # Commit the changes
         conn.execute("COMMIT")
 
         # Processing results
-        athlete_items = []
-        for result in query_results1:
-            item = {
-                "name": result[0],
-                "CCA3": result[1],
-                "discipline_name": result[2]
-            }
-            athlete_items.append(item)
+        results = {}
+        if query_results1:
+            athlete_items = []
+            for result in query_results1:
+                item = {
+                    "name": result[0],
+                    "CCA3": result[1],
+                    "discipline_name": result[2]
+                }
+                athlete_items.append(item)
+            results["athlete_items"] = athlete_items
 
-        coach_items = []
-        for result in query_results2:
-            item = {
-                "Name": result[0],
-                "CCA3": result[1],
-                "discipline_name": result[2]
-            }
-            coach_items.append(item)
+        if query_results2:
+            coach_items = []
+            for result in query_results2:
+                item = {
+                    "Name": result[0],
+                    "CCA3": result[1],
+                    "discipline_name": result[2]
+                }
+                coach_items.append(item)
+            results["coach_items"] = coach_items
 
     except Exception as e:
         # Rollback changes in case of an exception
@@ -225,5 +218,4 @@ def transaction_db(country_code, discipline_name) -> dict:
         # Close the connection
         conn.close()
 
-    return {"athlete_items": athlete_items, "coach_items": coach_items}
-
+    return results
