@@ -7,30 +7,20 @@ from app import database as dbs
 
 @app.route("/query1/<search>")
 def query1(search):
-    # try:
     items = dbs.q1(search)
-    # result = {'success': True, 'response': 'Removed task'}
-    # except:
-    # result = {'success': False, 'response': 'Something went wrong'}
-    # print(result)
     return render_template("a1.html", items=items)
 
-@app.route("/transaction")
-def transaction():
+@app.route("/transaction/<country>/<discipline>")
+def transaction(country, discipline):
     # json = request.get_json()
     # search = json['htmlstr']
-    items = dbs.transaction_db()
+    items = dbs.transaction_db(country, discipline)
     return render_template("transaction.html", results=items)
     
 
 @app.route("/query2/<search>")
 def query2(search):
-    # try:
     items = dbs.q2(search)
-    # result = {'success': True, 'response': 'Removed task'}
-    # except:
-    #     result = {'success': False, 'response': 'Something went wrong'}
-    # print(result)
     return render_template("a2.html", items=items)
 
 @app.route("/")

@@ -169,7 +169,7 @@ def transaction_db(country_code, discipline_name) -> dict:
                     FROM Athlete
                     INNER JOIN Country ON Athlete.CCA3 = Country.CCA3
                     INNER JOIN Discipline ON Athlete.discipline_name = Discipline.name
-                    WHERE Country.CCA3 = {country_code} AND Discipline.name = "{discipline_name}";
+                    WHERE Country.CCA3 = "{country_code}" AND Discipline.name = "{discipline_name}";
                     """
         query_results1 = conn.execute(query1).fetchall()
 
@@ -179,7 +179,7 @@ def transaction_db(country_code, discipline_name) -> dict:
                     FROM Coach
                     INNER JOIN Country ON Coach.CCA3 = Country.CCA3
                     INNER JOIN Discipline ON Coach.discipline_name = Discipline.name
-                    WHERE Country.CCA3 = {country_code} AND Discipline.name = "{discipline_name}";
+                    WHERE Country.CCA3 = "{country_code}" AND Discipline.name = "{discipline_name}";
                     """
         query_results2 = conn.execute(query2).fetchall()
 
