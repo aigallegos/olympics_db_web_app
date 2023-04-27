@@ -10,12 +10,10 @@ def query1(search):
     items = dbs.q1(search)
     return render_template("a1.html", items=items)
 
-@app.route("/transaction/<country>/<discipline>")
-def transaction(country, discipline):
-    # json = request.get_json()
-    # search = json['htmlstr']
-    items = dbs.transaction_db(country, discipline)
-    return render_template("transaction.html", results=items)
+@app.route('/transaction/<country_code>/<discipline_name>')
+def transaction_route(country_code, discipline_name):
+    results = transaction_db(country_code, discipline_name)
+    return render_template("transaction_results.html", results=results)
     
 
 @app.route("/query2/<search>")
