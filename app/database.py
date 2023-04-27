@@ -201,9 +201,9 @@ def transaction_db(country_code, discipline_name) -> dict:
         athlete_items = []
         for result in query_results1:
             item = {
-                "Name": result[0],
-                "Country": result[1],
-                "Discipline": result[2]
+                "name": result[0],
+                "CCA3": result[1],
+                "discipline_name": result[2]
             }
             athlete_items.append(item)
 
@@ -211,8 +211,8 @@ def transaction_db(country_code, discipline_name) -> dict:
         for result in query_results2:
             item = {
                 "Name": result[0],
-                "Country": result[1],
-                "Discipline": result[2]
+                "CCA3": result[1],
+                "discipline_name": result[2]
             }
             coach_items.append(item)
 
