@@ -155,6 +155,20 @@ def update_db(table, set_string, where_string):
     conn.execute(update_query)
     conn.close()
 
+def insert_db(table, value_string):
+
+    if table == "Athlete":
+        value_string = insertGenerator(value_string,0)
+    elif table == "Coach":
+        value_string = insertGenerator(value_string,1)
+    else:
+        value_string = insertGenerator(value_string,2)
+    conn = db.connect()
+    insert_query = f"INSERT INTO {table} VALUES({value_string});"
+    print(insert_query)
+    conn.execute(insert_query)
+    conn.close()
+
 def transaction_db(country_code, discipline_name) -> dict:
     conn = db.connect()
 
