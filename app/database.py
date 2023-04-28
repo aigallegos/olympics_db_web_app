@@ -149,7 +149,7 @@ def whole_table(table : int) -> bool:
 
 
 def update_db(table, set_string, where_string):
-    conn = db.connect(isolation_level='READ COMMITTED')
+    conn = db.connect()
     update_query = f"UPDATE {table} {setGenerator(set_string)} {whereGenerator(where_string)};"
     print(update_query)
     conn.execute(update_query)

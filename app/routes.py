@@ -111,7 +111,6 @@ def Country_search():
 
 @app.route("/athlete/update", methods=['POST'])
 def Athlete_update():
-
     try:
         json = request.get_json()
         search1 = json['htmlstr1']
